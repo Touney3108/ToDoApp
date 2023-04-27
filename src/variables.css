@@ -1,0 +1,16 @@
+:root{
+    /****COLORS****/
+    --color-background:#fff;
+    --color-primary:#444;
+    --color-secondary:#888;
+    --color-terciar:#aaa;
+    --color-dark:#000;
+    --color-success:#006900;
+    --color-danger:#7c0000;
+
+    /***UTILITY***/
+    --border-thickness:2px;
+    --border-secondary:var(--border-thickness) solid var(--color-secondary);
+    --border-dark:var(--border-thickness) solid var(--color-dark);
+    --border-terciar:var(--border-thickness) solid var(--color-terciar);
+}

@@ -1,0 +1,38 @@
+.inputs{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:4rem;
+    
+}
+.inputs div{
+    display:flex;
+    flex-direction: column;
+    color:var(--color-primary);
+    flex:1 1 0;
+}
+.inputFields,.inputs div select{
+    height:40px;
+    padding: 0;
+    background-color: var(--color-background);
+    display: inline;
+    width: 100%;
+    font-size: inherit;
+    border:var(--border-terciar);
+    color:inherit;
+    border-radius:.15rem;
+}
+
+
+@media only screen and (max-width: 930px) {
+    .inputs{
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: start;
+        margin:0 auto;
+        gap:1rem;
+    }
+    
+  }
+

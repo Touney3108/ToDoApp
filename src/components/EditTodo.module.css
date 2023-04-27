@@ -1,0 +1,11 @@
+.wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.wrapper label{
+    margin:0 .5rem;
+    border-color:var(--color-dark);
+    font-weight: 600;
+}

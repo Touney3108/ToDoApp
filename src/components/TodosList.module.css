@@ -1,0 +1,11 @@
+.todos{
+    grid-column:1/4;
+}
+@media only screen and (max-width: 930px) {
+
+    .todos{
+        grid-column: 1/5;
+        grid-row:auto;
+        
+    }
+}

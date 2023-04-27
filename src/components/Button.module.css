@@ -1,0 +1,61 @@
+.button{
+    height:40px;
+    margin-top:1.3rem;
+    width: 8rem;
+    border-radius: .5rem;
+    color:var(--color-background);
+    border:none;
+    transition:transform .2s;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: .75rem;
+    
+}
+.button:hover{
+    transform: scale(1.05);
+}
+/*Button color types*/
+.submit{
+    background-color:var(--color-secondary);
+    border:var(--border-dark);
+    cursor: auto;
+}
+.submit:hover{
+    transform: scale(1);
+}
+.submitAllowed{
+    background-color:var(--color-success);
+    cursor: pointer;
+}
+.submitAllowed:hover{
+    transform: scale(1.05);
+}
+.configuration{
+    color:var(--color-primary);
+    background-color:var(--color-background);
+    border:var(--border-secondary);
+}
+
+.update{
+    background-color:var(--color-success);
+}
+.disabledUpdate{
+    background-color: var(--color-secondary);
+}
+
+.delete{
+    background-color: var(--color-danger);
+    font-size: 1rem;
+}
+
+@media only screen and (max-width: 930px) {
+    .configuration,.submit{
+        width: 100%;
+        margin-top: 0;
+    }
+    .submit{
+        
+        margin-bottom: 1rem;
+    }
+
+  }
