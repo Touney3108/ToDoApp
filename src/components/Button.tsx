@@ -7,7 +7,6 @@ const Button: React.FC<{ btnType: string,btnStyle:string, clickFunction: () => v
     else if (btnType === "Configuration") btnClass += " " + classes.configuration;
     else if (btnType === "Update") btnClass += " " + classes.update;
     else if (btnType === "Delete") btnClass += " " + classes.delete;
-    else if (btnType === "Delete") btnClass += " " + classes.delete;
     
     if (btnStyle === "Disabled") btnClass += " " + classes.disabledUpdate;
     else if (btnStyle === "SubmitAllowed") btnClass += " " + classes.submitAllowed;
