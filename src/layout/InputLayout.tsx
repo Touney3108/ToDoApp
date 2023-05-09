@@ -6,26 +6,14 @@ import classes from "./InputLayout.module.css"
 import { TodosContext } from "../store/todos-context";
 
 const InputLayout = () => {
-    const { addTodo,setConfiguration } = useContext(TodosContext);
-    const [submitable, setSubmitable] = useState(false);
-    const [inputData, setInputData] = useState<{title:string,description:string,priority:string}>({title:"",description:"",priority:""});
+    const { submitTodo,setConfiguration,inputData } = useContext(TodosContext);
     const [newOrder, setNewOrder] = useState("High to low");
     const [newDisplay, setNewDisplay] = useState("All");
     const [configOpen, setConfigOpen] = useState(false);
-    const [clearInputs, setClearInputs] = useState(false);
 
     
-    const setSubmitableHandler = (valid:boolean) => {
-        setSubmitable(valid);
-    }
+    
    
-    const updateData = (title: string, description: string, priority: string) => {
-        
-        setInputData({ title, description, priority })
-        if (clearInputs) setClearInputs(false);
-        
-        
-    }
     const setOrderHandler = (value: string) => {
         if (value === "High to low" || value === "Low to high") {
             setNewOrder(value);
@@ -37,11 +25,10 @@ const InputLayout = () => {
         }
     }
     
-    const submitStyle = submitable ? "SubmitAllowed" : "";
+    const submitStyle = inputData.submitable ? "SubmitAllowed" : "";
     const addTodoHandler = () => {
-        if (submitable) {
-            addTodo(inputData.title, inputData.description, inputData.priority);
-            setClearInputs(true)
+        if (inputData.submitable) {
+            submitTodo();
         }
     }
     const setConfigurationHandler = () => {
@@ -57,7 +44,7 @@ const InputLayout = () => {
 
     return <>
         <div className={classes.inputFields}>
-            <InputFields isSubmitable={setSubmitableHandler} updateData={updateData} clearInputs={clearInputs} />
+            <InputFields />
         </div>
         <div className={classes.menu}>
             <Button btnType="Submit" btnStyle={submitStyle} clickFunction={addTodoHandler} />

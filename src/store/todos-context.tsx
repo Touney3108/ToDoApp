@@ -4,12 +4,15 @@ import TodoType from "../classes/TodoType";
 type TodosContextObj = {
     todosList: TodoType[],
     order: string,
-    display:string,
-    addTodo: (title: string, description: string, priority: string) => void,
+    display: string,
+    editMode: boolean,
+    inputData:{title:string,description:string,priority:string,submitable:boolean},
+    submitTodo: () => void,
     removeTodo: (id: string) => void,
     editDoneTodo: (id: string, done: boolean) => void,
     editOpen: (id: string) => void,
-    setConfiguration: (newOrder: string,newDisplay:string) => void,
+    setConfiguration: (newOrder: string, newDisplay: string) => void,
+    setInputData:(title:string,description:string,priority:string,submitable:boolean)=>void,
     
 
 }
@@ -17,12 +20,15 @@ type TodosContextObj = {
 export const TodosContext = React.createContext<TodosContextObj>({
     todosList: [],
     order:"",
-    display:"",
-    addTodo: () => { },
+    display: "",
+    editMode: false,
+    inputData:{title:"",description:"",priority:"",submitable:false},
+    submitTodo: () => { },
     removeTodo:(id:string)=>{ },
     editDoneTodo: (id: string, done: boolean) => { },
     editOpen: (id: string) => { },
-    setConfiguration: (newOrder: string,newDisplay:string) => { },
+    setConfiguration: (newOrder: string, newDisplay: string) => { },
+    setInputData:(title:string,description:string,priority:string,submitable:boolean)=>{},
 });
 
 const TodosContextProvider: React.FC<{ children: ReactNode }> = (props) => {
@@ -65,39 +71,67 @@ const TodosContextProvider: React.FC<{ children: ReactNode }> = (props) => {
   ]);
   const [order, setOrder] = useState("High to low")
   const [display, setDisplay] = useState("All");
+  const [editMode, setEditMode] = useState(false);
+  const [inputData, setInputData] = useState({ title: "", description: "", priority: "",submitable:false});
   
+  const editDone = () => {
+    setInputData({ title: "", description: "", priority: "", submitable: false })
+    setEditMode(false);
+  }
 
  
 
-  const addTodoHandler = (title: string, description: string, priority: string) => {
-    const newTodo = new TodoType(title,description,priority);
-    setTodos((prevTodos) => {
-      return prevTodos.concat(newTodo)
-    })
+  const submitTodoHandler = () => {
+  if(inputData.submitable)
+    {
+      if (!editMode) {
+      const newTodo = new TodoType(inputData.title,inputData.description,inputData.priority);
+      setTodos((prevTodos) => {
+        return prevTodos.concat(newTodo)
+      })
+    }
+    else {
+      const editableTodo = todos.find(todo => todo.editOpen === true)
+      if (editableTodo) {
+        editableTodo.title = inputData.title;
+        editableTodo.description = inputData.description;
+        editableTodo.priority = inputData.priority;
+        editableTodo.editOpen = false;
+      }
+    }
+    editDone();
+    }
   }
 
   const removeTodoHandler = (id:string) => {
     setTodos((prevTodos) => {
       return prevTodos.filter(element=>element.id!==id)
     })
+    editDone();
   }
   const editDoneTodoHandler = (id: string, done: boolean) => {
-    setTodos((prevTodos) => {
-      const updatedTodos:any=prevTodos.map(element => {
-        if (element.id === id) {
-          return { ...element, done: done,editOpen:false }
-        } else {
-          return element;
-        }
-      })
-    return updatedTodos;
-    })
+    if(inputData.submitable){
+      const editableTodo = todos.find(todo => todo.id === id);
+      if (editableTodo) {
+        editableTodo.done = done;
+        editableTodo.title = inputData.title;
+        editableTodo.description = inputData.description;
+        editableTodo.priority = inputData.priority;
+        editableTodo.editOpen = false;
+      }
+      editDone()
+    }
     
   }
   const editOpenHandler = (id: string) => {
     setTodos((prevTodos) => {
       const updatedTodos:any=prevTodos.map(element => {
         if (element.id === id) {
+          if (!element.editOpen) { 
+            setEditMode(true);
+            setInputData({title:element.title,description:element.description,priority:element.priority,submitable:true})
+          }
+          else setEditMode(false);
           return { ...element,editOpen:!element.editOpen}
         } else {
           return { ...element,editOpen:false};
@@ -110,9 +144,10 @@ const TodosContextProvider: React.FC<{ children: ReactNode }> = (props) => {
   const setConfigurationHandler = (newOrder: string,newDisplay:string) => {
     if (newOrder !== order) setOrder(newOrder);
     if (newDisplay !== display) setDisplay(newDisplay);
-    console.log(display,order)
-    console.log(newDisplay,newOrder)
+  }
 
+  const setInputDataHandler = (title: string, description: string, priority: string,submitable:boolean) => {
+    setInputData({title,description,priority,submitable})
   }
   
 
@@ -121,12 +156,15 @@ const TodosContextProvider: React.FC<{ children: ReactNode }> = (props) => {
     const contextValue:TodosContextObj= {
         todosList: todos,
         order: order,
-        display:display,
-        addTodo: addTodoHandler,
+        display: display,
+        editMode: editMode,
+        inputData:inputData,
+        submitTodo: submitTodoHandler,
         removeTodo: removeTodoHandler,
         editDoneTodo: editDoneTodoHandler,
         editOpen: editOpenHandler,
         setConfiguration: setConfigurationHandler,
+        setInputData:setInputDataHandler,
     }
     return <TodosContext.Provider value={contextValue}>
         {props.children}

@@ -3,7 +3,7 @@ import {TodosContext} from "../store/todos-context"
 import Button from "./Button";
 import classes from "./EditTodo.module.css";
 const EditTodo: React.FC<{ id: string,done:boolean }> = ({ id,done }) => {
-    const todosCtx = useContext(TodosContext);
+    const {editDoneTodo,removeTodo,inputData} = useContext(TodosContext);
     const [isChecked, setIsChecked] = useState(done);
     
     const changeChecked = () => {
@@ -11,13 +11,13 @@ const EditTodo: React.FC<{ id: string,done:boolean }> = ({ id,done }) => {
     }
 
     const doneChangedHandler = () => {
-        todosCtx.editDoneTodo(id,isChecked)
+        editDoneTodo(id,isChecked)
         
     }
     const deleteHandler = () => {
-        todosCtx.removeTodo(id);
+        removeTodo(id);
     }
-    const buttonStyle = done ? "Disabled" : "";
+    const buttonStyle = !inputData.submitable ? "Disabled" : "";
 
     return <div className={classes.wrapper}>
         <Button btnType="Delete" btnStyle="" clickFunction={deleteHandler} />
